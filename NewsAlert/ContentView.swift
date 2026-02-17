@@ -1,24 +1,42 @@
-//
-//  ContentView.swift
-//  NewsAlert
-//
-//  Created by Georgina on 2026-02-16.
-//
+// File: ContentView.swift
 
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var appViewModel = AppViewModel()
+    @StateObject private var notificationScheduler = BriefingNotificationScheduler.shared
+    @State private var didBootstrap = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            NavigationStack {
+                BriefingsView()
+            }
+            .tabItem {
+                Label("Briefings", systemImage: "sun.max")
+            }
+
+            NavigationStack {
+                ExploreView()
+            }
+            .tabItem {
+                Label("Explore", systemImage: "newspaper")
+            }
         }
-        .padding()
+        .environmentObject(appViewModel)
+        .task {
+            guard !didBootstrap else { return }
+            didBootstrap = true
+
+            await notificationScheduler.requestAuthorizationAndSchedule()
+            await appViewModel.loadInitialDataIfNeeded()
+            BackgroundRefreshManager.scheduleNextRefresh()
+        }
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
