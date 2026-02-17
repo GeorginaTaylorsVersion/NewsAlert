@@ -258,7 +258,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "NewsAlert-Info.plist";
 				INFOPLIST_KEY_BACKEND_AUTH_TOKEN = "";
-				INFOPLIST_KEY_BACKEND_BASE_URL = "http://127.0.0.1:8787";
+					INFOPLIST_KEY_BACKEND_BASE_URL = "http://192.168.2.21:8787";
 				INFOPLIST_KEY_GUARDIAN_API_BASE_URL = "https://content.guardianapis.com";
 				INFOPLIST_KEY_GUARDIAN_API_KEY = "4a9e1b3e-2ae4-41da-a15d-998cdbd4d368";
 				INFOPLIST_KEY_NEWSCATCHER_API_BASE_URL = "https://api.newscatcherapi.com";
