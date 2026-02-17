@@ -75,7 +75,9 @@ private extension BackendBriefingService {
                 return nil
             }
 
-            let articleURL = (item.url ?? "").flatMap(URL.init(string:)) ?? URL(string: "https://newsalarm.local")!
+            let trimmedID = item.id?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let fallbackToken = trimmedID.isEmpty ? title : trimmedID
+            let articleURL = normalizedArticleURL(rawValue: item.url, fallbackToken: fallbackToken)
             let trimmedSource = item.source?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             let sourceName = trimmedSource.isEmpty ? "NewsAlarm Backend" : trimmedSource
             let trimmedSummary = item.summary?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -108,12 +110,30 @@ private extension BackendBriefingService {
         var output: [Article] = []
 
         for article in articles {
-            let key = normalize(article.title)
+            let titleKey = normalize(article.title)
+            let sourceKey = article.sourceDomain.lowercased()
+            let key = "\(sourceKey)|\(titleKey)"
             guard !key.isEmpty, seen.insert(key).inserted else { continue }
             output.append(article)
         }
 
         return output
+    }
+
+    func normalizedArticleURL(rawValue: String?, fallbackToken: String) -> URL {
+        let trimmed = rawValue?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if let parsed = URL(string: trimmed),
+           let scheme = parsed.scheme?.lowercased(),
+           scheme == "http" || scheme == "https" {
+            return parsed
+        }
+
+        let slug = normalize(fallbackToken)
+            .replacingOccurrences(of: " ", with: "-")
+            .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+
+        let safeSlug = slug.isEmpty ? UUID().uuidString.lowercased() : slug
+        return URL(string: "https://newsalarm.local/article/\(safeSlug)")!
     }
 
     func normalize(_ value: String) -> String {

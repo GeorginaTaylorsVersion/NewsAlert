@@ -1,0 +1,98 @@
+{
+  "2026-02-17-12": {
+    "slotId": "2026-02-17-12",
+    "briefingType": "noon",
+    "generatedAt": "2026-02-17T20:30:14.828Z",
+    "payload": {
+      "politics": [
+        {
+          "id": "b57b045d-824b-4f22-8f0d-583d61fb8361",
+          "category": "politics",
+          "title": "Fallback: Senate Budget Timeline Narrows",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: negotiations widen across committees before a narrower compromise emerges.",
+          "url": null
+        },
+        {
+          "id": "20b7547f-2b6b-4cc6-b837-fd4d390878a2",
+          "category": "politics",
+          "title": "Fallback: Election Procedure Hearings Expand",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: negotiations widen across committees before a narrower compromise emerges.",
+          "url": null
+        },
+        {
+          "id": "9e440157-af69-435d-b08e-ca5db0890115",
+          "category": "politics",
+          "title": "Fallback: Trade Policy Panel Schedules Review",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: negotiations widen across committees before a narrower compromise emerges.",
+          "url": null
+        }
+      ],
+      "technology": [
+        {
+          "id": "280794ad-164a-4207-a0e4-70c7d31ce9d4",
+          "category": "technology",
+          "title": "Fallback: On-Device AI Rollout Continues",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: near-term iteration focuses on reliability and cost controls over brand-new capability.",
+          "url": null
+        },
+        {
+          "id": "3d507bc4-3583-43b4-905d-fba0ea06be96",
+          "category": "technology",
+          "title": "Fallback: Cloud Spend Governance Tightens",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: near-term iteration focuses on reliability and cost controls over brand-new capability.",
+          "url": null
+        },
+        {
+          "id": "2ae2c578-f91c-4709-8421-b8193898647f",
+          "category": "technology",
+          "title": "Fallback: Package Signing Adoption Increases",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: near-term iteration focuses on reliability and cost controls over brand-new capability.",
+          "url": null
+        }
+      ],
+      "finance": [
+        {
+          "id": "4a70bfcf-d234-4b62-9eb0-193c1571fe49",
+          "category": "finance",
+          "title": "Fallback: Rate Volatility Monitored by Lenders",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: volatility stays elevated until the next major macro datapoint resets expectations.",
+          "url": null
+        },
+        {
+          "id": "7e974213-3946-49ea-8841-3f0082a6dd87",
+          "category": "finance",
+          "title": "Fallback: Consumer Value Shift Holds",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: volatility stays elevated until the next major macro datapoint resets expectations.",
+          "url": null
+        }
+      ],
+      "entertainment": [
+        {
+          "id": "bcae9ccd-4838-4b6c-b1e3-7151f248867c",
+          "category": "entertainment",
+          "title": "Fallback: Streaming Window Strategy Evolves",
+          "source": "NewsAlarm Fallback",
+          "summary": "Temporary fallback article used when external APIs fail.",
+          "aiPrediction": "Likely development: distribution strategy shifts toward channels with stronger week-two retention.",
+          "url": null
+        }
+      ]
+    }
+  }
+}

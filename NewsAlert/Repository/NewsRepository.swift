@@ -68,20 +68,26 @@ private extension NewsRepository {
     }
 
     func dedupeArticles(_ articles: [Article]) -> [Article] {
-        var seenURLs = Set<String>()
+        var seenURLTitle = Set<String>()
         var seenSourceTitle = Set<String>()
         var output: [Article] = []
 
         for article in articles.sorted(by: { $0.publishedAt > $1.publishedAt }) {
-            let urlKey = article.url.absoluteString
-            if !seenURLs.insert(urlKey).inserted {
-                continue
+            let normalizedTitle = normalizeTitle(article.title)
+            if !normalizedTitle.isEmpty {
+                let sourceTitleKey = "\(article.sourceDomain.lowercased())|\(normalizedTitle)"
+                if !seenSourceTitle.insert(sourceTitleKey).inserted {
+                    continue
+                }
             }
 
-            let normalizedTitle = normalizeTitle(article.title)
-            let sourceTitleKey = "\(article.sourceDomain.lowercased())|\(normalizedTitle)"
-            if !normalizedTitle.isEmpty, !seenSourceTitle.insert(sourceTitleKey).inserted {
-                continue
+            let host = article.url.host?.lowercased() ?? ""
+            if host != "newsalarm.local" {
+                let urlKey = article.url.absoluteString.lowercased()
+                let urlTitleKey = normalizedTitle.isEmpty ? urlKey : "\(urlKey)|\(normalizedTitle)"
+                if !seenURLTitle.insert(urlTitleKey).inserted {
+                    continue
+                }
             }
 
             output.append(article)
