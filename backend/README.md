@@ -68,7 +68,7 @@ Set these app values (Info.plist / build settings / scheme env):
 
 Notes:
 - For a physical device, `127.0.0.1` points to the phone itself. Use your Mac's LAN IP and same port.
-- Endpoint guarantees payload shape `3 politics / 3 technology / 2 finance / 1 entertainment`.
+- Endpoint guarantees payload shape `2 politics / 2 technology / 2 finance / 0 entertainment`.
 - If source APIs fail, backend fills with fallback items so the payload contract remains valid.
 - iOS must have:
   - Background App Refresh enabled

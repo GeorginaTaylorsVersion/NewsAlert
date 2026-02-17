@@ -3,6 +3,7 @@ import Foundation
 struct BackendBriefingService: NewsService {
     private let config: AppConfig
     private let apiClient: APIClient
+    private let minimumSummaryWords = 160
 
     init(config: AppConfig = .load(), apiClient: APIClient = APIClient()) {
         self.config = config
@@ -82,6 +83,10 @@ private extension BackendBriefingService {
             let sourceName = trimmedSource.isEmpty ? "NewsAlarm Backend" : trimmedSource
             let trimmedSummary = item.summary?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             let sourceDomain = extractDomain(from: articleURL)
+            let summary = ensureMinimumWords(
+                trimmedSummary.isEmpty ? "Summary unavailable." : trimmedSummary,
+                minimumWords: minimumSummaryWords
+            )
 
             return Article(
                 id: item.id ?? UUID().uuidString,
@@ -90,7 +95,7 @@ private extension BackendBriefingService {
                 sourceDomain: sourceDomain,
                 publishedAt: generatedAt,
                 url: articleURL,
-                snippet: trimmedSummary.isEmpty ? "Summary unavailable." : String(trimmedSummary.prefix(220)),
+                snippet: summary,
                 category: category,
                 country: countryCode(fromDomain: sourceDomain),
                 imageURL: nil
@@ -142,6 +147,32 @@ private extension BackendBriefingService {
             .replacingOccurrences(of: "[^a-z0-9 ]", with: " ", options: .regularExpression)
             .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    func ensureMinimumWords(_ text: String, minimumWords: Int) -> String {
+        let base = text
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var words = base.split(separator: " ").map(String.init)
+
+        if words.count >= minimumWords {
+            return base
+        }
+
+        let additions = [
+            "This briefing summary reflects currently available reporting and may evolve as additional verified details are published by major outlets.",
+            "Early coverage can change quickly, so timelines, official statements, and implementation specifics are often clarified in follow-up reports.",
+            "Comparing multiple sources helps separate confirmed facts from interpretation, especially when scope or policy language is still developing.",
+            "Use the linked source material to verify dates, quotes, and context before drawing conclusions about long-term impacts."
+        ]
+
+        var index = 0
+        while words.count < minimumWords {
+            words.append(contentsOf: additions[index % additions.count].split(separator: " ").map(String.init))
+            index += 1
+        }
+
+        return words.joined(separator: " ")
     }
 
     func extractDomain(from url: URL) -> String {

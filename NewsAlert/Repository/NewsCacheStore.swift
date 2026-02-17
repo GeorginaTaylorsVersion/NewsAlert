@@ -7,7 +7,7 @@ final class NewsCacheStore {
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
-    init(fileName: String = "news_stories_cache.json") {
+    init(fileName: String = "news_stories_cache_v2_2_2_0.json") {
         let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             ?? URL(fileURLWithPath: NSTemporaryDirectory())
         self.fileURL = cachesDirectory.appendingPathComponent(fileName)

@@ -18,10 +18,15 @@ struct BriefingsView: View {
                 }
                 .pickerStyle(.segmented)
 
-                section(title: "Politics", stories: viewModel.briefing.politics)
-                section(title: "Technology", stories: viewModel.briefing.technology)
-                section(title: "Finance", stories: viewModel.briefing.finance)
-                section(title: "Entertainment", stories: viewModel.briefing.entertainment)
+                if !viewModel.briefing.politics.isEmpty {
+                    section(title: "Politics", stories: viewModel.briefing.politics)
+                }
+                if !viewModel.briefing.technology.isEmpty {
+                    section(title: "Technology", stories: viewModel.briefing.technology)
+                }
+                if !viewModel.briefing.finance.isEmpty {
+                    section(title: "Finance", stories: viewModel.briefing.finance)
+                }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)

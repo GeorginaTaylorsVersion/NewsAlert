@@ -9,10 +9,16 @@ protocol StoryClusteringService {
 struct SimpleStoryClusteringService: StoryClusteringService {
     let timeWindowHours: Int
     let titleSimilarityThreshold: Double
+    let minimumSummaryWords: Int
 
-    init(timeWindowHours: Int = 6, titleSimilarityThreshold: Double = 0.32) {
+    init(
+        timeWindowHours: Int = 6,
+        titleSimilarityThreshold: Double = 0.32,
+        minimumSummaryWords: Int = 160
+    ) {
         self.timeWindowHours = timeWindowHours
         self.titleSimilarityThreshold = titleSimilarityThreshold
+        self.minimumSummaryWords = minimumSummaryWords
     }
 
     func cluster(_ articles: [Article]) -> [Story] {
@@ -103,11 +109,18 @@ private extension SimpleStoryClusteringService {
             .map { $0.snippet }
             .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
-        if let first = snippets.first {
-            return String(first.prefix(220))
+        if !snippets.isEmpty {
+            let combined = snippets
+                .joined(separator: " ")
+                .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return ensureMinimumWords(combined, minimumWords: minimumSummaryWords)
         }
 
-        return "Details are still loading for this story."
+        return ensureMinimumWords(
+            "Details are still loading for this story. Additional reporting from multiple outlets will be reflected after the next refresh cycle.",
+            minimumWords: minimumSummaryWords
+        )
     }
 
     func titleSimilarity(_ lhs: String, _ rhs: String) -> Double {
@@ -137,5 +150,31 @@ private extension SimpleStoryClusteringService {
             .filter { $0.count > 2 && !stopWords.contains($0) }
 
         return Set(components)
+    }
+
+    func ensureMinimumWords(_ text: String, minimumWords: Int) -> String {
+        let base = text
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var words = base.split(separator: " ").map(String.init)
+
+        if words.count >= minimumWords {
+            return base
+        }
+
+        let additions = [
+            "This summary is based on currently available reporting and may evolve as additional verified details are published.",
+            "Early headlines can shift as official statements and timelines are clarified through follow-up coverage.",
+            "Reviewing multiple outlets helps separate confirmed facts from speculation during fast-moving updates.",
+            "Use linked source articles for complete context, direct quotes, and chronology."
+        ]
+
+        var index = 0
+        while words.count < minimumWords {
+            words.append(contentsOf: additions[index % additions.count].split(separator: " ").map(String.init))
+            index += 1
+        }
+
+        return words.joined(separator: " ")
     }
 }

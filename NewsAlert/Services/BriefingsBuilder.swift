@@ -23,14 +23,14 @@ struct BriefingsBuilder {
         let rankedRecent = rankStories(recent, now: now, targetWindow: window)
 
         let politics = pickStories(
-            targetCount: 3,
+            targetCount: 2,
             category: .politics,
             rankedTiers: [rankedInWindow, rankedNearby, rankedRecent],
             briefingType: type,
             now: now
         )
         let technology = pickStories(
-            targetCount: 3,
+            targetCount: 2,
             category: .technology,
             rankedTiers: [rankedInWindow, rankedNearby, rankedRecent],
             briefingType: type,
@@ -44,7 +44,7 @@ struct BriefingsBuilder {
             now: now
         )
         let entertainment = pickStories(
-            targetCount: 1,
+            targetCount: 0,
             category: .entertainment,
             rankedTiers: [rankedInWindow, rankedNearby, rankedRecent],
             briefingType: type,
